@@ -6,13 +6,9 @@ function TimeLeft({ endTime, onEnd }) {
   const [timeLeft, setTimeLeft] = useState('Calculating...');
 
   useEffect(() => {
-    // Debug logs
-    console.log('TimeLeft component mounted with endTime:', endTime);
-
     const updateTimer = () => {
       if (!endTime) {
-        console.log('No endTime provided');
-        setTimeLeft('Time not set');
+        setTimeLeft('No end date set');
         return;
       }
 
@@ -146,7 +142,7 @@ export default function AuctionList() {
               <strong>${item.currentPrice || item.basePrice}</strong>
             </p>
             <p>Status: {item.isClosed ? "Closed" : "Open"}</p>
-            <TimeLeft endTime={item.endTime} />
+            <TimeLeft endTime={item.endDate} />
             <Link
               to={`/item/${item._id}`}
               className="btn-primary mt-2 inline-block"
@@ -157,7 +153,6 @@ export default function AuctionList() {
         ))}
       </div>
     </div>
-  );
+  )
 }
-  );
-}
+
