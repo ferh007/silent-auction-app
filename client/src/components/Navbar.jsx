@@ -1,31 +1,22 @@
-import { createContext, useContext, useEffect, useState } from "react";
-import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
+import { Link } from "react-router-dom";
+import styles from "./Navbar.module.css";
+import { useAuth } from "../contexts/AuthContext";
 
-const AuthContext = createContext();
-
-export function AuthProvider({ children }) {
-  const [currentUser, setCurrentUser] = useState(null);
-  const auth = getAuth();
-
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, user => {
-      setCurrentUser(user);
-    });
-
-    return () => unsubscribe();
-  }, [auth]);
-
-  const logout = () => {
-    return signOut(auth);
-  };
+export default function Navbar() {
+  const { currentUser, logout } = useAuth();
 
   return (
-    <AuthContext.Provider value={{ currentUser, logout }}>
-      {children}
-    </AuthContext.Provider>
+    <nav className={styles.nav}>
+      <div className={styles.logo}>
+        <Link to="/">Silent Auction</Link>
+      </div>
+      <div className={styles.links}>
+        {currentUser?.email === process.env.REACT_APP_ADMIN_EMAIL && (
+          <Link to="/admin">Admin</Link>
+        )}
+        <span>{currentUser?.email}</span>
+        <button onClick={logout}>Logout</button>
+      </div>
+    </nav>
   );
-}
-
-export function useAuth() {
-  return useContext(AuthContext);
 }
