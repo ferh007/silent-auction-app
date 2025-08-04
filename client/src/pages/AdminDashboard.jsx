@@ -1,29 +1,56 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../contexts/AuthContext";
 import api from "../api";
 
 export default function AdminDashboard() {
   const [items, setItems] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const { currentUser } = useAuth();
+  const navigate = useNavigate();
 
   useEffect(() => {
+    // Check if user is admin
+    if (!currentUser || currentUser.email !== process.env.REACT_APP_ADMIN_EMAIL) {
+      navigate('/');
+      return;
+    }
+
     api.get("/api/items")
       .then(res => setItems(res.data))
-      .catch(err => console.error("Failed to fetch items:", err));
-  }, []);
+      .catch(err => console.error("Failed to fetch items:", err))
+      .finally(() => setLoading(false));
+  }, [currentUser, navigate]);
 
-  const closeAuction = (itemId) => {
+  const closeAuction = async (itemId) => {
     if (!window.confirm("Close this auction? This will determine a winner.")) return;
 
-    api.patch(`/api/items/${itemId}/close`)
-      .then(res => {
-        const updatedItem = res.data;
-        setItems(prev => prev.map(item => item._id === itemId ? updatedItem : item));
-        alert(`Auction closed. Winner: ${updatedItem.winnerEmail || 'No bids'}`);
-      })
-      .catch(err => {
-        console.error("Failed to close auction:", err);
-        alert(err.response?.data?.message || "Error closing auction");
-      });
+    try {
+      const res = await api.patch(`/api/items/${itemId}/close`);
+      setItems(prev => prev.map(item => 
+        item._id === itemId ? res.data : item
+      ));
+      alert(`Auction closed. Winner: ${res.data.winnerEmail || 'No bids'}`);
+    } catch (err) {
+      console.error("Failed to close auction:", err);
+      alert(err.response?.data?.message || "Error closing auction");
+    }
   };
+
+  const deleteAuction = async (itemId) => {
+    if (!window.confirm("Delete this auction? This cannot be undone.")) return;
+
+    try {
+      await api.delete(`/api/items/${itemId}`);
+      setItems(prev => prev.filter(item => item._id !== itemId));
+      alert("Auction deleted successfully");
+    } catch (err) {
+      console.error("Failed to delete auction:", err);
+      alert(err.response?.data?.message || "Error deleting auction");
+    }
+  };
+
+  if (loading) return <div>Loading...</div>;
 
   return (
     <div className="p-4">
@@ -45,24 +72,26 @@ export default function AdminDashboard() {
               <td className="py-1 px-2">{item.title}</td>
               <td className="py-1 px-2">${item.currentPrice || item.basePrice}</td>
               <td className="py-1 px-2">{item.isClosed ? "Closed" : "Open"}</td>
-              <td className="py-1 px-2">
-                {!item.isClosed ? (
+              <td className="py-1 px-2 space-x-2">
+                {!item.isClosed && (
                   <button
                     onClick={() => closeAuction(item._id)}
-                    className="btn-secondary bg-red-600 text-white px-2 py-1 rounded hover:bg-red-700"
+                    className="btn-secondary bg-yellow-600 text-white px-2 py-1 rounded hover:bg-yellow-700"
                   >
-                    Close Auction
+                    Close
                   </button>
-                ) : (
-                  <span>Winner: {item.winnerEmail || "None"}</span>
                 )}
+                <button
+                  onClick={() => deleteAuction(item._id)}
+                  className="btn-secondary bg-red-600 text-white px-2 py-1 rounded hover:bg-red-700"
+                >
+                  Delete
+                </button>
               </td>
             </tr>
           ))}
         </tbody>
       </table>
-
-      {/* Optional: Add item creation UI here */}
     </div>
   );
 }
