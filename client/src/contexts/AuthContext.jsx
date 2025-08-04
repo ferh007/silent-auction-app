@@ -1,5 +1,11 @@
-import { createContext, useContext, useEffect, useState } from "react";
-import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
+import { createContext, useContext, useState, useEffect } from "react";
+import {
+  getAuth,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  signOut,
+  onAuthStateChanged,
+} from "firebase/auth";
 import { initializeApp } from "firebase/app";
 
 // Firebase config
@@ -19,21 +25,46 @@ const AuthContext = createContext();
 
 export function AuthProvider({ children }) {
   const [currentUser, setCurrentUser] = useState(null);
-  const [isAdmin, setIsAdmin] = useState(false);
+  const [loading, setLoading] = useState(true);
+
+  // Check if user is admin
+  const isAdmin = currentUser?.email === process.env.REACT_APP_ADMIN_EMAIL;
+
+  // Sign up function
+  async function signup(email, password) {
+    return createUserWithEmailAndPassword(auth, email, password);
+  }
+
+  // Login function
+  async function login(email, password) {
+    return signInWithEmailAndPassword(auth, email, password);
+  }
+
+  // Logout function
+  async function logout() {
+    return signOut(auth);
+  }
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       setCurrentUser(user);
-      setIsAdmin(user?.email === process.env.REACT_APP_ADMIN_EMAIL);
+      setLoading(false);
     });
-    return () => unsubscribe();
-  }, []);
 
-  const logout = () => signOut(auth);
+    return unsubscribe;
+  }, [auth]);
+
+  const value = {
+    currentUser,
+    isAdmin,
+    signup,
+    login,
+    logout,
+  };
 
   return (
-    <AuthContext.Provider value={{ currentUser, isAdmin, logout }}>
-      {children}
+    <AuthContext.Provider value={value}>
+      {!loading && children}
     </AuthContext.Provider>
   );
 }

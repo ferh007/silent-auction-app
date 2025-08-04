@@ -3,7 +3,7 @@ import styles from "./Navbar.module.css";
 import { useAuth } from "../contexts/AuthContext";
 
 export default function Navbar() {
-  const { currentUser, logout } = useAuth();
+  const { currentUser, logout, isAdmin } = useAuth();
 
   return (
     <nav className={styles.nav}>
@@ -11,7 +11,7 @@ export default function Navbar() {
         <Link to="/">Silent Auction</Link>
       </div>
       <div className={styles.links}>
-        {currentUser?.email === process.env.REACT_APP_ADMIN_EMAIL && (
+        {isAdmin && (
           <Link to="/admin">Admin</Link>
         )}
         <span>{currentUser?.email}</span>
