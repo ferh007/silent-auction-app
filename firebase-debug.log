@@ -1,0 +1,139 @@
+[debug] [2025-08-04T03:04:48.237Z] ----------------------------------------------------------------------
+[debug] [2025-08-04T03:04:48.238Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\ferna\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js init
+[debug] [2025-08-04T03:04:48.238Z] CLI Version:   14.11.2
+[debug] [2025-08-04T03:04:48.238Z] Platform:      win32
+[debug] [2025-08-04T03:04:48.238Z] Node Version:  v24.2.0
+[debug] [2025-08-04T03:04:48.239Z] Time:          Sun Aug 03 2025 20:04:48 GMT-0700 (Pacific Daylight Time)
+[debug] [2025-08-04T03:04:48.239Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2025-08-04T03:04:48.241Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2025-08-04T03:04:48.241Z] > authorizing via signed-in user (fernando403@gmail.com)
+[info] 
+     ######## #### ########  ######## ########     ###     ######  ########
+     ##        ##  ##     ## ##       ##     ##  ##   ##  ##       ##
+     ######    ##  ########  ######   ########  #########  ######  ######
+     ##        ##  ##    ##  ##       ##     ## ##     ##       ## ##
+     ##       #### ##     ## ######## ########  ##     ##  ######  ########
+
+You're about to initialize a Firebase project in this directory:
+
+  C:\Users\ferna\Desktop\final project\silent-auction-app
+
+[info] 
+=== Project Setup
+[info] 
+[info] First, let's associate this project directory with a Firebase project.
+[info] You can create multiple project aliases by running firebase use --add, 
+[info] but for now we'll just set up a default project.
+[info] 
+[debug] [2025-08-04T03:05:07.450Z] Checked if tokens are valid: true, expires at: 1754280083265
+[debug] [2025-08-04T03:05:07.450Z] Checked if tokens are valid: true, expires at: 1754280083265
+[debug] [2025-08-04T03:05:07.450Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects pageSize=100
+[debug] [2025-08-04T03:05:07.898Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects 200
+[debug] [2025-08-04T03:05:07.898Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects [omitted]
+[info] i  Using project silentauctionapp-4ca96 (SilentAuctionApp) 
+[info] 
+=== App Hosting Setup
+[debug] [2025-08-04T03:05:09.668Z] Checked if tokens are valid: true, expires at: 1754280083265
+[debug] [2025-08-04T03:05:09.668Z] Checked if tokens are valid: true, expires at: 1754280083265
+[debug] [2025-08-04T03:05:09.668Z] >>> [apiv2][query] GET https://cloudbilling.googleapis.com/v1/projects/silentauctionapp-4ca96/billingInfo [none]
+[debug] [2025-08-04T03:05:09.814Z] <<< [apiv2][status] GET https://cloudbilling.googleapis.com/v1/projects/silentauctionapp-4ca96/billingInfo 200
+[debug] [2025-08-04T03:05:09.814Z] <<< [apiv2][body] GET https://cloudbilling.googleapis.com/v1/projects/silentauctionapp-4ca96/billingInfo {"name":"projects/silentauctionapp-4ca96/billingInfo","projectId":"silentauctionapp-4ca96","billingAccountName":"billingAccounts/010C0B-CE7A7C-B4DA5A","billingEnabled":true}
+[debug] [2025-08-04T03:05:09.814Z] Checked if tokens are valid: true, expires at: 1754280083265
+[debug] [2025-08-04T03:05:09.814Z] Checked if tokens are valid: true, expires at: 1754280083265
+[debug] [2025-08-04T03:05:09.814Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/silentauctionapp-4ca96/services/firebaseapphosting.googleapis.com [none]
+[debug] [2025-08-04T03:05:09.814Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/silentauctionapp-4ca96/services/firebaseapphosting.googleapis.com x-goog-quota-user=projects/silentauctionapp-4ca96
+[debug] [2025-08-04T03:05:10.014Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/silentauctionapp-4ca96/services/firebaseapphosting.googleapis.com 200
+[debug] [2025-08-04T03:05:10.014Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/silentauctionapp-4ca96/services/firebaseapphosting.googleapis.com [omitted]
+[debug] [2025-08-04T03:05:10.014Z] Checked if tokens are valid: true, expires at: 1754280083265
+[debug] [2025-08-04T03:05:10.014Z] Checked if tokens are valid: true, expires at: 1754280083265
+[debug] [2025-08-04T03:05:10.014Z] >>> [apiv2][query] POST https://serviceusage.googleapis.com/v1/projects/silentauctionapp-4ca96/services/firebaseapphosting.googleapis.com:enable [none]
+[debug] [2025-08-04T03:05:10.014Z] >>> [apiv2][(partial)header] POST https://serviceusage.googleapis.com/v1/projects/silentauctionapp-4ca96/services/firebaseapphosting.googleapis.com:enable x-goog-quota-user=projects/silentauctionapp-4ca96
+[debug] [2025-08-04T03:05:10.437Z] <<< [apiv2][status] POST https://serviceusage.googleapis.com/v1/projects/silentauctionapp-4ca96/services/firebaseapphosting.googleapis.com:enable 200
+[debug] [2025-08-04T03:05:10.437Z] <<< [apiv2][body] POST https://serviceusage.googleapis.com/v1/projects/silentauctionapp-4ca96/services/firebaseapphosting.googleapis.com:enable [omitted]
+[debug] [2025-08-04T03:05:20.460Z] Checked if tokens are valid: true, expires at: 1754280083265
+[debug] [2025-08-04T03:05:20.460Z] Checked if tokens are valid: true, expires at: 1754280083265
+[debug] [2025-08-04T03:05:20.460Z] Checked if tokens are valid: true, expires at: 1754280083265
+[debug] [2025-08-04T03:05:20.460Z] Checked if tokens are valid: true, expires at: 1754280083265
+[debug] [2025-08-04T03:05:20.460Z] Checked if tokens are valid: true, expires at: 1754280083265
+[debug] [2025-08-04T03:05:20.460Z] Checked if tokens are valid: true, expires at: 1754280083265
+[debug] [2025-08-04T03:05:20.460Z] Checked if tokens are valid: true, expires at: 1754280083265
+[debug] [2025-08-04T03:05:20.460Z] Checked if tokens are valid: true, expires at: 1754280083265
+[debug] [2025-08-04T03:05:20.460Z] Checked if tokens are valid: true, expires at: 1754280083265
+[debug] [2025-08-04T03:05:20.460Z] Checked if tokens are valid: true, expires at: 1754280083265
+[debug] [2025-08-04T03:05:20.461Z] Checked if tokens are valid: true, expires at: 1754280083265
+[debug] [2025-08-04T03:05:20.461Z] Checked if tokens are valid: true, expires at: 1754280083265
+[debug] [2025-08-04T03:05:20.461Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/silentauctionapp-4ca96/services/developerconnect.googleapis.com [none]
+[debug] [2025-08-04T03:05:20.461Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/silentauctionapp-4ca96/services/developerconnect.googleapis.com x-goog-quota-user=projects/silentauctionapp-4ca96
+[debug] [2025-08-04T03:05:20.462Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/silentauctionapp-4ca96/services/cloudbuild.googleapis.com [none]
+[debug] [2025-08-04T03:05:20.462Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/silentauctionapp-4ca96/services/cloudbuild.googleapis.com x-goog-quota-user=projects/silentauctionapp-4ca96
+[debug] [2025-08-04T03:05:20.462Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/silentauctionapp-4ca96/services/secretmanager.googleapis.com [none]
+[debug] [2025-08-04T03:05:20.463Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/silentauctionapp-4ca96/services/secretmanager.googleapis.com x-goog-quota-user=projects/silentauctionapp-4ca96
+[debug] [2025-08-04T03:05:20.463Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/silentauctionapp-4ca96/services/run.googleapis.com [none]
+[debug] [2025-08-04T03:05:20.463Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/silentauctionapp-4ca96/services/run.googleapis.com x-goog-quota-user=projects/silentauctionapp-4ca96
+[debug] [2025-08-04T03:05:20.464Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/silentauctionapp-4ca96/services/artifactregistry.googleapis.com [none]
+[debug] [2025-08-04T03:05:20.464Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/silentauctionapp-4ca96/services/artifactregistry.googleapis.com x-goog-quota-user=projects/silentauctionapp-4ca96
+[debug] [2025-08-04T03:05:20.465Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/silentauctionapp-4ca96/services/iam.googleapis.com [none]
+[debug] [2025-08-04T03:05:20.465Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/silentauctionapp-4ca96/services/iam.googleapis.com x-goog-quota-user=projects/silentauctionapp-4ca96
+[debug] [2025-08-04T03:05:20.857Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/silentauctionapp-4ca96/services/developerconnect.googleapis.com 200
+[debug] [2025-08-04T03:05:20.857Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/silentauctionapp-4ca96/services/developerconnect.googleapis.com [omitted]
+[debug] [2025-08-04T03:05:20.857Z] Checked if tokens are valid: true, expires at: 1754280083265
+[debug] [2025-08-04T03:05:20.857Z] Checked if tokens are valid: true, expires at: 1754280083265
+[debug] [2025-08-04T03:05:20.857Z] >>> [apiv2][query] POST https://serviceusage.googleapis.com/v1/projects/silentauctionapp-4ca96/services/developerconnect.googleapis.com:enable [none]
+[debug] [2025-08-04T03:05:20.857Z] >>> [apiv2][(partial)header] POST https://serviceusage.googleapis.com/v1/projects/silentauctionapp-4ca96/services/developerconnect.googleapis.com:enable x-goog-quota-user=projects/silentauctionapp-4ca96
+[debug] [2025-08-04T03:05:20.862Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/silentauctionapp-4ca96/services/run.googleapis.com 200
+[debug] [2025-08-04T03:05:20.862Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/silentauctionapp-4ca96/services/run.googleapis.com [omitted]
+[debug] [2025-08-04T03:05:20.867Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/silentauctionapp-4ca96/services/secretmanager.googleapis.com 200
+[debug] [2025-08-04T03:05:20.867Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/silentauctionapp-4ca96/services/secretmanager.googleapis.com [omitted]
+[debug] [2025-08-04T03:05:20.872Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/silentauctionapp-4ca96/services/cloudbuild.googleapis.com 200
+[debug] [2025-08-04T03:05:20.872Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/silentauctionapp-4ca96/services/cloudbuild.googleapis.com [omitted]
+[debug] [2025-08-04T03:05:20.876Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/silentauctionapp-4ca96/services/iam.googleapis.com 200
+[debug] [2025-08-04T03:05:20.876Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/silentauctionapp-4ca96/services/iam.googleapis.com [omitted]
+[debug] [2025-08-04T03:05:20.908Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/silentauctionapp-4ca96/services/artifactregistry.googleapis.com 200
+[debug] [2025-08-04T03:05:20.908Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/silentauctionapp-4ca96/services/artifactregistry.googleapis.com [omitted]
+[debug] [2025-08-04T03:05:21.324Z] <<< [apiv2][status] POST https://serviceusage.googleapis.com/v1/projects/silentauctionapp-4ca96/services/developerconnect.googleapis.com:enable 200
+[debug] [2025-08-04T03:05:21.324Z] <<< [apiv2][body] POST https://serviceusage.googleapis.com/v1/projects/silentauctionapp-4ca96/services/developerconnect.googleapis.com:enable [omitted]
+[debug] [2025-08-04T03:05:31.342Z] Checked if tokens are valid: true, expires at: 1754280083265
+[debug] [2025-08-04T03:05:31.343Z] Checked if tokens are valid: true, expires at: 1754280083265
+[debug] [2025-08-04T03:05:31.343Z] >>> [apiv2][query] POST https://iam.googleapis.com/v1/projects/silentauctionapp-4ca96/serviceAccounts/firebase-app-hosting-compute@silentauctionapp-4ca96.iam.gserviceaccount.com:testIamPermissions [none]
+[debug] [2025-08-04T03:05:31.343Z] >>> [apiv2][(partial)header] POST https://iam.googleapis.com/v1/projects/silentauctionapp-4ca96/serviceAccounts/firebase-app-hosting-compute@silentauctionapp-4ca96.iam.gserviceaccount.com:testIamPermissions x-goog-quota-user=projects/silentauctionapp-4ca96
+[debug] [2025-08-04T03:05:31.343Z] >>> [apiv2][body] POST https://iam.googleapis.com/v1/projects/silentauctionapp-4ca96/serviceAccounts/firebase-app-hosting-compute@silentauctionapp-4ca96.iam.gserviceaccount.com:testIamPermissions {"permissions":["iam.serviceAccounts.actAs"]}
+[debug] [2025-08-04T03:05:31.701Z] <<< [apiv2][status] POST https://iam.googleapis.com/v1/projects/silentauctionapp-4ca96/serviceAccounts/firebase-app-hosting-compute@silentauctionapp-4ca96.iam.gserviceaccount.com:testIamPermissions 404
+[debug] [2025-08-04T03:05:31.701Z] <<< [apiv2][body] POST https://iam.googleapis.com/v1/projects/silentauctionapp-4ca96/serviceAccounts/firebase-app-hosting-compute@silentauctionapp-4ca96.iam.gserviceaccount.com:testIamPermissions {"error":{"code":404,"message":"Unknown service account","status":"NOT_FOUND"}}
+[debug] [2025-08-04T03:05:31.701Z] Checked if tokens are valid: true, expires at: 1754280083265
+[debug] [2025-08-04T03:05:31.701Z] Checked if tokens are valid: true, expires at: 1754280083265
+[debug] [2025-08-04T03:05:31.701Z] >>> [apiv2][query] POST https://iam.googleapis.com/v1/projects/silentauctionapp-4ca96/serviceAccounts [none]
+[debug] [2025-08-04T03:05:31.701Z] >>> [apiv2][body] POST https://iam.googleapis.com/v1/projects/silentauctionapp-4ca96/serviceAccounts {"accountId":"firebase-app-hosting-compute","serviceAccount":{"displayName":"Firebase App Hosting compute service account","description":"Default service account used to run builds and deploys for Firebase App Hosting"}}
+[debug] [2025-08-04T03:05:32.057Z] <<< [apiv2][status] POST https://iam.googleapis.com/v1/projects/silentauctionapp-4ca96/serviceAccounts 200
+[debug] [2025-08-04T03:05:32.057Z] <<< [apiv2][body] POST https://iam.googleapis.com/v1/projects/silentauctionapp-4ca96/serviceAccounts [omitted]
+[debug] [2025-08-04T03:05:32.057Z] Checked if tokens are valid: true, expires at: 1754280083265
+[debug] [2025-08-04T03:05:32.057Z] Checked if tokens are valid: true, expires at: 1754280083265
+[debug] [2025-08-04T03:05:32.057Z] >>> [apiv2][query] POST https://cloudresourcemanager.googleapis.com/v1/projects/silentauctionapp-4ca96:getIamPolicy [none]
+[debug] [2025-08-04T03:05:32.341Z] <<< [apiv2][status] POST https://cloudresourcemanager.googleapis.com/v1/projects/silentauctionapp-4ca96:getIamPolicy 200
+[debug] [2025-08-04T03:05:32.341Z] <<< [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/silentauctionapp-4ca96:getIamPolicy {"version":1,"etag":"BwY7gWBjj1s=","bindings":[{"role":"roles/cloudaicompanion.serviceAgent","members":["serviceAccount:service-602301560206@gcp-sa-cloudaicompanion.iam.gserviceaccount.com"]},{"role":"roles/cloudbuild.builds.builder","members":["serviceAccount:602301560206@cloudbuild.gserviceaccount.com"]},{"role":"roles/cloudbuild.serviceAgent","members":["serviceAccount:service-602301560206@gcp-sa-cloudbuild.iam.gserviceaccount.com"]},{"role":"roles/containerregistry.ServiceAgent","members":["serviceAccount:service-602301560206@containerregistry.iam.gserviceaccount.com"]},{"role":"roles/editor","members":["serviceAccount:602301560206-compute@developer.gserviceaccount.com"]},{"role":"roles/firebase.managementServiceAgent","members":["serviceAccount:service-602301560206@gcp-sa-firebase.iam.gserviceaccount.com"]},{"role":"roles/firebase.sdkAdminServiceAgent","members":["serviceAccount:firebase-adminsdk-fbsvc@silentauctionapp-4ca96.iam.gserviceaccount.com"]},{"role":"roles/firebaseauth.admin","members":["serviceAccount:firebase-adminsdk-fbsvc@silentauctionapp-4ca96.iam.gserviceaccount.com"]},{"role":"roles/iam.serviceAccountTokenCreator","members":["serviceAccount:firebase-adminsdk-fbsvc@silentauctionapp-4ca96.iam.gserviceaccount.com"]},{"role":"roles/owner","members":["user:fernando403@gmail.com"]},{"role":"roles/run.serviceAgent","members":["serviceAccount:service-602301560206@serverless-robot-prod.iam.gserviceaccount.com"]}]}
+[debug] [2025-08-04T03:05:32.341Z] Checked if tokens are valid: true, expires at: 1754280083265
+[debug] [2025-08-04T03:05:32.341Z] Checked if tokens are valid: true, expires at: 1754280083265
+[debug] [2025-08-04T03:05:32.341Z] >>> [apiv2][query] POST https://cloudresourcemanager.googleapis.com/v1/projects/silentauctionapp-4ca96:setIamPolicy [none]
+[debug] [2025-08-04T03:05:32.341Z] >>> [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/silentauctionapp-4ca96:setIamPolicy {"policy":{"version":1,"etag":"BwY7gWBjj1s=","bindings":[{"role":"roles/cloudaicompanion.serviceAgent","members":["serviceAccount:service-602301560206@gcp-sa-cloudaicompanion.iam.gserviceaccount.com"]},{"role":"roles/cloudbuild.builds.builder","members":["serviceAccount:602301560206@cloudbuild.gserviceaccount.com"]},{"role":"roles/cloudbuild.serviceAgent","members":["serviceAccount:service-602301560206@gcp-sa-cloudbuild.iam.gserviceaccount.com"]},{"role":"roles/containerregistry.ServiceAgent","members":["serviceAccount:service-602301560206@containerregistry.iam.gserviceaccount.com"]},{"role":"roles/editor","members":["serviceAccount:602301560206-compute@developer.gserviceaccount.com"]},{"role":"roles/firebase.managementServiceAgent","members":["serviceAccount:service-602301560206@gcp-sa-firebase.iam.gserviceaccount.com"]},{"role":"roles/firebase.sdkAdminServiceAgent","members":["serviceAccount:firebase-adminsdk-fbsvc@silentauctionapp-4ca96.iam.gserviceaccount.com","serviceAccount:firebase-app-hosting-compute@silentauctionapp-4ca96.iam.gserviceaccount.com"]},{"role":"roles/firebaseauth.admin","members":["serviceAccount:firebase-adminsdk-fbsvc@silentauctionapp-4ca96.iam.gserviceaccount.com"]},{"role":"roles/iam.serviceAccountTokenCreator","members":["serviceAccount:firebase-adminsdk-fbsvc@silentauctionapp-4ca96.iam.gserviceaccount.com"]},{"role":"roles/owner","members":["user:fernando403@gmail.com"]},{"role":"roles/run.serviceAgent","members":["serviceAccount:service-602301560206@serverless-robot-prod.iam.gserviceaccount.com"]},{"role":"roles/firebaseapphosting.computeRunner","members":["serviceAccount:firebase-app-hosting-compute@silentauctionapp-4ca96.iam.gserviceaccount.com"]},{"role":"roles/developerconnect.readTokenAccessor","members":["serviceAccount:firebase-app-hosting-compute@silentauctionapp-4ca96.iam.gserviceaccount.com"]},{"role":"roles/storage.objectViewer","members":["serviceAccount:firebase-app-hosting-compute@silentauctionapp-4ca96.iam.gserviceaccount.com"]}]},"updateMask":"bindings"}
+[debug] [2025-08-04T03:05:33.145Z] <<< [apiv2][status] POST https://cloudresourcemanager.googleapis.com/v1/projects/silentauctionapp-4ca96:setIamPolicy 400
+[debug] [2025-08-04T03:05:33.145Z] <<< [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/silentauctionapp-4ca96:setIamPolicy {"error":{"code":400,"message":"Service account firebase-app-hosting-compute@silentauctionapp-4ca96.iam.gserviceaccount.com does not exist.","status":"INVALID_ARGUMENT"}}
+[warn] !  Your App Hosting compute service account is still being provisioned in the background. If you encounter an error, please try again after a few moments. 
+[info] i  This command links your local project to Firebase App Hosting. You will be able to deploy your web app with `firebase deploy` after setup. 
+[debug] [2025-08-04T03:05:42.782Z] Checked if tokens are valid: true, expires at: 1754280083265
+[debug] [2025-08-04T03:05:42.782Z] Checked if tokens are valid: true, expires at: 1754280083265
+[debug] [2025-08-04T03:05:42.782Z] >>> [apiv2][query] GET https://firebaseapphosting.googleapis.com/v1beta/projects/silentauctionapp-4ca96/locations/-/backends 
+[debug] [2025-08-04T03:05:43.343Z] <<< [apiv2][status] GET https://firebaseapphosting.googleapis.com/v1beta/projects/silentauctionapp-4ca96/locations/-/backends 200
+[debug] [2025-08-04T03:05:43.343Z] <<< [apiv2][body] GET https://firebaseapphosting.googleapis.com/v1beta/projects/silentauctionapp-4ca96/locations/-/backends {}
+[debug] [2025-08-04T03:10:40.294Z] ExitPromptError: User force closed the prompt with SIGINT
+    at Interface.sigint (C:\Users\ferna\AppData\Roaming\npm\node_modules\firebase-tools\node_modules\@inquirer\core\dist\commonjs\lib\create-prompt.js:101:37)
+    at Interface.emit (node:events:507:28)
+    at Interface.emit (node:domain:489:12)
+    at [_ttyWrite] [as _ttyWrite] (node:internal/readline/interface:1315:18)
+    at ReadStream.onkeypress (node:internal/readline/interface:284:20)
+    at ReadStream.emit (node:events:519:35)
+    at ReadStream.emit (node:domain:489:12)
+    at emitKeys (node:internal/readline/utils:371:14)
+    at emitKeys.next (<anonymous>)
+    at ReadStream.onData (node:internal/readline/emitKeypressEvents:64:36)
+[error] 
+[error] Error: An unexpected error has occurred.
