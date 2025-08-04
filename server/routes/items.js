@@ -196,4 +196,36 @@ router.delete('/:id', verifyToken, async (req, res) => {
   }
 });
 
+// Create new auction item (admin only)
+router.post('/', verifyToken, async (req, res) => {
+  try {
+    // Check if user is admin
+    if (req.user.email !== process.env.ADMIN_EMAIL) {
+      return res.status(403).json({ message: "Only admin can create auctions" });
+    }
+
+    const { title, description, imageUrl, basePrice, endDate } = req.body;
+
+    // Validate required fields
+    if (!title || !description || !basePrice) {
+      return res.status(400).json({ message: "Missing required fields" });
+    }
+
+    const newItem = new AuctionItem({
+      title,
+      description,
+      imageUrl,
+      basePrice,
+      endDate: endDate ? new Date(endDate) : null,
+      createdBy: req.user.email
+    });
+
+    await newItem.save();
+    res.status(201).json(newItem);
+  } catch (err) {
+    console.error('Create item error:', err);
+    res.status(500).json({ message: "Failed to create auction item" });
+  }
+});
+
 module.exports = router;

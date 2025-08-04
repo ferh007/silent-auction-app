@@ -6,6 +6,14 @@ import api from "../api";
 export default function AdminDashboard() {
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [showForm, setShowForm] = useState(false);
+  const [newItem, setNewItem] = useState({
+    title: '',
+    description: '',
+    imageUrl: '',
+    basePrice: '',
+    endDate: ''
+  });
   const { currentUser, isAdmin } = useAuth();
   const navigate = useNavigate();
 
@@ -62,12 +70,122 @@ export default function AdminDashboard() {
     }
   };
 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await api.post('/api/items', {
+        ...newItem,
+        basePrice: parseFloat(newItem.basePrice)
+      });
+      setItems(prev => [...prev, response.data]);
+      setNewItem({
+        title: '',
+        description: '',
+        imageUrl: '',
+        basePrice: '',
+        endDate: ''
+      });
+      setShowForm(false);
+      alert('New auction item created successfully!');
+    } catch (err) {
+      console.error('Failed to create item:', err);
+      alert(err.response?.data?.message || 'Error creating auction item');
+    }
+  };
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setNewItem(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
+
   if (loading) return <div>Loading...</div>;
 
   return (
     <div className="p-4">
-      <h1 className="text-2xl font-bold mb-4">Admin Dashboard</h1>
-      <p className="mb-4">Manage auction items and view bidding status.</p>
+      <div className="flex justify-between items-center mb-4">
+        <h1 className="text-2xl font-bold">Admin Dashboard</h1>
+        <button
+          onClick={() => setShowForm(!showForm)}
+          className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
+        >
+          {showForm ? 'Cancel' : 'Add New Item'}
+        </button>
+      </div>
+
+      {showForm && (
+        <form onSubmit={handleSubmit} className="mb-8 bg-white p-4 rounded shadow">
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+            <div>
+              <label className="block mb-1">Title</label>
+              <input
+                type="text"
+                name="title"
+                value={newItem.title}
+                onChange={handleChange}
+                className="w-full border rounded p-2"
+                required
+              />
+            </div>
+            <div>
+              <label className="block mb-1">Image URL</label>
+              <input
+                type="url"
+                name="imageUrl"
+                value={newItem.imageUrl}
+                onChange={handleChange}
+                className="w-full border rounded p-2"
+                required
+              />
+            </div>
+            <div>
+              <label className="block mb-1">Base Price ($)</label>
+              <input
+                type="number"
+                name="basePrice"
+                value={newItem.basePrice}
+                onChange={handleChange}
+                min="0"
+                step="0.01"
+                className="w-full border rounded p-2"
+                required
+              />
+            </div>
+            <div>
+              <label className="block mb-1">End Date</label>
+              <input
+                type="datetime-local"
+                name="endDate"
+                value={newItem.endDate}
+                onChange={handleChange}
+                className="w-full border rounded p-2"
+                required
+              />
+            </div>
+            <div className="md:col-span-2">
+              <label className="block mb-1">Description</label>
+              <textarea
+                name="description"
+                value={newItem.description}
+                onChange={handleChange}
+                className="w-full border rounded p-2"
+                rows="3"
+                required
+              />
+            </div>
+          </div>
+          <div className="mt-4 flex justify-end">
+            <button
+              type="submit"
+              className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+            >
+              Create Auction Item
+            </button>
+          </div>
+        </form>
+      )}
 
       <table className="min-w-full text-left">
         <thead>
