@@ -151,17 +151,31 @@ router.patch('/:id/close', verifyToken, async (req, res) => {
 // Delete an auction (admin only)
 router.delete('/:id', verifyToken, async (req, res) => {
   try {
-    // Debug logging
-    console.log({
+    // Enhanced debug logging
+    console.log('Delete attempt:', {
       requestEmail: req.user.email,
       envAdminEmail: process.env.ADMIN_EMAIL,
-      isMatch: req.user.email === process.env.ADMIN_EMAIL
+      isMatch: req.user.email === process.env.ADMIN_EMAIL,
+      headers: req.headers,
+      userObject: req.user
     });
 
-    // Check if user is admin
-    if (req.user.email !== process.env.ADMIN_EMAIL) {
+    // Check if ADMIN_EMAIL is loaded
+    if (!process.env.ADMIN_EMAIL) {
+      console.error('ADMIN_EMAIL not set in environment');
+      return res.status(500).json({ message: "Server configuration error" });
+    }
+
+    // Case-insensitive comparison
+    if (req.user.email.toLowerCase() !== process.env.ADMIN_EMAIL.toLowerCase()) {
       console.log('Unauthorized delete attempt by:', req.user.email);
-      return res.status(403).json({ message: "Only admin can delete auctions" });
+      return res.status(403).json({ 
+        message: "Only admin can delete auctions",
+        debug: {
+          userEmail: req.user.email,
+          expectedEmail: process.env.ADMIN_EMAIL
+        }
+      });
     }
 
     const item = await AuctionItem.findById(req.params.id);
