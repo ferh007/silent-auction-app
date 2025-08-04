@@ -21,4 +21,14 @@ async function verifyToken(req, res, next) {
   }
 }
 
+const token = await auth.currentUser.getIdToken();
+fetch('/api/bids', {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+    'Authorization': `Bearer ${token}`
+  },
+  body: JSON.stringify({ ...bidData })
+});
+
 module.exports = verifyToken;
