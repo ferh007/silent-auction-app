@@ -10,13 +10,12 @@ router.get('/', async (req, res) => {
   try {
     const items = await AuctionItem.find().lean();
     
-    // Check and update auction status based on endTime
+    // Check and update auction status based on endDate
     for (let item of items) {
-      if (!item.isClosed && item.endTime && new Date() >= new Date(item.endTime)) {
+      if (!item.isClosed && item.endDate && new Date() >= new Date(item.endDate)) {
         await AuctionItem.findByIdAndUpdate(item._id, { isClosed: true });
         item.isClosed = true;
         
-        // Emit auction ended event
         const io = req.app.get('socketio');
         if (io) {
           io.emit('auctionEnded', item._id);
@@ -64,7 +63,7 @@ router.post('/:id/bid', verifyToken, async (req, res) => {
     const item = await AuctionItem.findById(id);
     if (!item) return res.status(404).json({ message: "Item not found" });
     
-    // Check if auction has ended based on endTime
+    // Check if auction has ended based on endDate
     if (item.hasEnded()) {
       item.isClosed = true;
       await item.save();
@@ -153,7 +152,7 @@ router.patch('/:id/close', verifyToken, async (req, res) => {
         from: process.env.FROM_EMAIL || '"Auction App" <no-reply@auction.com>',
         to: winnerEmail,
         subject: `Congratulations! You won the auction for "${item.title}"`,
-        text: `Dear bidder,\n\nCongratulations! Your bid of $${item.currentPrice} is the highest for "${item.title}".\n\nWe will contact you with further details.\n\nBest regards,\nSilent Auction Team`
+        text: `Dear bidder,\n\nCongratulations! Your bid of $${item.title} is the highest for "${item.title}".\n\nWe will contact you with further details.\n\nBest regards,\nSilent Auction Team`
       };
 
       try {
@@ -227,33 +226,39 @@ router.post('/', verifyToken, async (req, res) => {
       return res.status(403).json({ message: "Only admin can create auctions" });
     }
 
-    const { title, description, imageUrl, basePrice, endTime } = req.body;
+    const { title, description, imageUrl, basePrice, endDate } = req.body;
 
     // Validate required fields
-    if (!title || !description || !basePrice) {
+    if (!title || !description || !imageUrl || basePrice === undefined || basePrice === null || basePrice === "") {
       return res.status(400).json({ message: "Missing required fields" });
     }
 
-    // Validate endTime
-    if (!endTime) {
-      return res.status(400).json({ message: "End time is required" });
+    // Validate basePrice is a valid number
+    const basePriceNum = parseFloat(basePrice);
+    if (isNaN(basePriceNum) || basePriceNum < 0) {
+      return res.status(400).json({ message: "Base price must be a valid non-negative number" });
     }
 
-    const endTimeDate = new Date(endTime);
-    if (isNaN(endTimeDate.getTime())) {
-      return res.status(400).json({ message: "Invalid end time format" });
+    // Validate endDate
+    if (!endDate) {
+      return res.status(400).json({ message: "End date is required" });
     }
 
-    if (endTimeDate <= new Date()) {
-      return res.status(400).json({ message: "End time must be in the future" });
+    const endDateTime = new Date(endDate);
+    if (isNaN(endDateTime.getTime())) {
+      return res.status(400).json({ message: "Invalid end date format" });
+    }
+
+    if (endDateTime <= new Date()) {
+      return res.status(400).json({ message: "End date must be in the future" });
     }
 
     const newItem = new AuctionItem({
       title,
       description,
       imageUrl,
-      basePrice,
-      endTime: endTimeDate,
+      basePrice: basePriceNum,
+      endDate: endDateTime,
       createdBy: req.user.email
     });
 

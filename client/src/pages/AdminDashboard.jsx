@@ -72,10 +72,34 @@ export default function AdminDashboard() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // Validate endDate before submitting
+    if (!newItem.endDate) {
+      alert("End date is required.");
+      return;
+    }
+    const formattedEndDate = new Date(newItem.endDate);
+    if (isNaN(formattedEndDate.getTime())) {
+      alert("End date is invalid.");
+      return;
+    }
+
+    // Log payload for debugging
+    console.log('Submitting new auction item:', {
+      title: newItem.title,
+      description: newItem.description,
+      imageUrl: newItem.imageUrl,
+      basePrice: parseFloat(newItem.basePrice),
+      endDate: formattedEndDate.toISOString()
+    });
+
     try {
       const response = await api.post('/api/items', {
-        ...newItem,
-        basePrice: parseFloat(newItem.basePrice)
+        title: newItem.title,
+        description: newItem.description,
+        imageUrl: newItem.imageUrl,
+        basePrice: parseFloat(newItem.basePrice),
+        endDate: formattedEndDate.toISOString()
       });
       setItems(prev => [...prev, response.data]);
       setNewItem({
