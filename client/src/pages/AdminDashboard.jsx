@@ -53,7 +53,11 @@ export default function AdminDashboard() {
       setItems(prev => prev.filter(item => item._id !== itemId));
       alert("Auction deleted successfully");
     } catch (err) {
-      console.error("Failed to delete auction:", err);
+      console.error("Failed to delete auction:", {
+        status: err.response?.status,
+        data: err.response?.data,
+        message: err.message
+      });
       alert(err.response?.data?.message || "Error deleting auction");
     }
   };

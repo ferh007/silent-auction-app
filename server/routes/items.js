@@ -153,6 +153,7 @@ router.delete('/:id', verifyToken, async (req, res) => {
   try {
     // Check if user is admin
     if (req.user.email !== process.env.ADMIN_EMAIL) {
+      console.log('Unauthorized delete attempt by:', req.user.email);
       return res.status(403).json({ message: "Only admin can delete auctions" });
     }
 
@@ -161,10 +162,10 @@ router.delete('/:id', verifyToken, async (req, res) => {
       return res.status(404).json({ message: "Item not found" });
     }
 
-    // Delete associated bids first
+    // Delete associated bids
     await Bid.deleteMany({ item: req.params.id });
     
-    // Then delete the item
+    // Delete the item
     await AuctionItem.findByIdAndDelete(req.params.id);
     
     res.json({ message: "Auction deleted successfully" });
