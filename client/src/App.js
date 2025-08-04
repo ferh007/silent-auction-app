@@ -9,7 +9,10 @@ import Navbar from "./components/Navbar";
 import { io } from "socket.io-client";
 
 // Create and expose socket.io instance
-const socket = io(process.env.REACT_APP_API_URL);
+const socket = io(process.env.REACT_APP_API_URL, {
+  withCredentials: true,
+  transports: ['websocket', 'polling']
+});
 window.socket = socket;
 
 function App() {

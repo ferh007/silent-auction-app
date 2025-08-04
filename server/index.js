@@ -9,8 +9,13 @@ const app = express();
 const server = http.createServer(app);  // for integrating Socket.io
 const io = require('socket.io')(server, {
   cors: {
-    origin: process.env.CLIENT_URL || "http://localhost:3000",
-    methods: ["GET", "POST"]
+    origin: [
+      process.env.CLIENT_URL,
+      'http://localhost:3000',
+      'https://silentauctionapp-4ca96.web.app'
+    ],
+    methods: ["GET", "POST"],
+    credentials: true
   }
 });
 
@@ -18,7 +23,14 @@ const io = require('socket.io')(server, {
 app.set('socketio', io);
 
 // Middleware
-app.use(cors());
+app.use(cors({
+  origin: [
+    process.env.CLIENT_URL,
+    'http://localhost:3000',
+    'https://silentauctionapp-4ca96.web.app'
+  ],
+  credentials: true
+}));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
