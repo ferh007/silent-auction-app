@@ -7,13 +7,21 @@ require('dotenv').config();
 
 const app = express();
 const server = http.createServer(app);  // for integrating Socket.io
+const io = require('socket.io')(server, {
+  cors: {
+    origin: process.env.CLIENT_URL || "http://localhost:3000",
+    methods: ["GET", "POST"]
+  }
+});
+
+// Store socket.io instance
+app.set('socketio', io);
 
 // Middleware
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Connect to MongoDB
 // Connect to MongoDB
 mongoose.connect(process.env.MONGO_URI, {
   useNewUrlParser: true,
@@ -24,10 +32,6 @@ mongoose.connect(process.env.MONGO_URI, {
 
 
 // Socket.io setup
-const { Server } = require('socket.io');
-const io = new Server(server, {
-  cors: { origin: "*" }  // allow all origins for dev; restrict in production
-});
 io.on('connection', (socket) => {
   console.log('Client connected via socket:', socket.id);
   socket.on('disconnect', () => {

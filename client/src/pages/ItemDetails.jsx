@@ -7,6 +7,7 @@ export default function ItemDetails() {
   const [item, setItem] = useState(null);
   const [bids, setBids] = useState([]);
   const [newBid, setNewBid] = useState("");
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     // Fetch item details and bid history
@@ -41,7 +42,7 @@ export default function ItemDetails() {
 
   const highestBid = item.currentPrice || item.basePrice;
 
-  const onBidSubmit = (e) => {
+  const onBidSubmit = async (e) => {
     e.preventDefault();
     const bidAmount = parseFloat(newBid);
 
@@ -50,18 +51,61 @@ export default function ItemDetails() {
       return;
     }
 
-    api.post(`/api/items/${id}/bid`, { amount: bidAmount })
-      .then(() => setNewBid(""))
-      .catch(err => {
-        console.error("Bid failed:", err);
-        alert(err.response?.data?.message || "Failed to place bid");
+    try {
+      setLoading(true);
+      const response = await api.post(`/api/items/${id}/bid`, { 
+        amount: bidAmount,
+        itemId: id // Explicitly include itemId
       });
+
+      setNewBid("");
+      alert("Bid placed successfully!");
+
+      // Update UI with new data
+      setItem(prev => ({
+        ...prev,
+        currentPrice: bidAmount,
+        currentBidder: response.data.userEmail
+      }));
+
+      // Add new bid to history
+      setBids(prev => [...prev, {
+        amount: bidAmount,
+        userEmail: response.data.userEmail,
+        timestamp: new Date()
+      }]);
+
+    } catch (error) {
+      console.error("Bid failed:", {
+        status: error.response?.status,
+        data: error.response?.data,
+        message: error.message,
+        stack: error.stack
+      });
+
+      // Show specific error message
+      const errorMessage = error.response?.data?.message 
+        || error.message 
+        || "Failed to place bid. Please try again.";
+      alert(errorMessage);
+
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
     <div className="p-4">
       <h2 className="text-2xl font-bold">{item.title}</h2>
-      <img src={item.imageUrl} alt={item.title} className="w-full max-w-md my-4" />
+      <img 
+        src={item.imageUrl || 'https://placehold.co/300x200'} 
+        alt={item.title}
+        className="w-full max-w-md my-4"
+        onError={(e) => {
+          e.target.src = 'https://placehold.co/300x200';
+          e.target.onerror = null;
+        }}
+      />
       <p>{item.description}</p>
       <p>Status: {item.isClosed ? "Closed" : "Open"}</p>
       <p>Highest Bid: <strong>${highestBid}</strong> {item.currentBidder && `by ${item.currentBidder}`}</p>
@@ -76,8 +120,15 @@ export default function ItemDetails() {
             onChange={e => setNewBid(e.target.value)}
             className="border p-2 mr-2"
             required
+            disabled={loading}
           />
-          <button type="submit" className="btn-primary">Place Bid</button>
+          <button 
+            type="submit" 
+            className="btn-primary disabled:opacity-50"
+            disabled={loading}
+          >
+            Place Bid
+          </button>
         </form>
       ) : (
         <p className="mt-4 text-red-600">This auction is closed.</p>

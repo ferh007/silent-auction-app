@@ -31,6 +31,12 @@ router.get('/:id', async (req, res) => {
 
 // ✅ Place a bid on an item (protected)
 router.post('/:id/bid', verifyToken, async (req, res) => {
+  console.log('Bid attempt:', {
+    itemId: req.params.id,
+    user: req.user,
+    amount: req.body.amount
+  });
+  
   const user = req.user;
   const { id } = req.params;
   const { amount } = req.body;
@@ -64,17 +70,23 @@ router.post('/:id/bid', verifyToken, async (req, res) => {
     item.currentBidder = user.email;
     await item.save();
 
-    req.app.get('socketio').emit('bidUpdate', {
-      itemId: id,
-      userEmail: user.email,
-      amount: bidAmount,
-      timestamp: bid.timestamp
-    });
+    // Safely emit socket event
+    const io = req.app.get('socketio');
+    if (io) {
+      io.emit('bidUpdate', {
+        itemId: id,
+        userEmail: user.email,
+        amount: bidAmount,
+        timestamp: bid.timestamp
+      });
+    } else {
+      console.warn('Socket.IO not initialized');
+    }
 
     return res.status(201).json({ message: "Bid placed", bidId: bid._id });
   } catch (err) {
-    console.error(err);
-    res.status(500).json({ message: "Failed to place bid" });
+    console.error('Detailed bid error:', err);
+    res.status(500).json({ message: err.message || "Failed to place bid" });
   }
 });
 
