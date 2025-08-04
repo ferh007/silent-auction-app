@@ -152,7 +152,7 @@ export default function ItemDetails() {
           />
           <button 
             type="submit" 
-            className="btn-primary disabled:opacity-50"
+            className="btn-bid disabled:opacity-50"
             disabled={loading}
           >
             {loading ? "Placing Bid..." : "Place Bid"}

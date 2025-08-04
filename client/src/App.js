@@ -1,4 +1,5 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
+import "./App.css";
 import { AuthProvider, useAuth } from "./contexts/AuthContext";
 import { io } from "socket.io-client";
 import Login from "./pages/Login";

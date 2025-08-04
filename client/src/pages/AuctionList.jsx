@@ -127,28 +127,43 @@ export default function AuctionList() {
         value={search}
         onChange={e => setSearch(e.target.value)}
       />
-      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {filteredItems.map(item => (
-          <div key={item._id} className="border rounded p-4">
-            <h2 className="text-xl font-semibold">{item.title}</h2>
-            <img
-              src={item.imageUrl}
-              alt={item.title}
-              className="w-full h-40 object-cover my-2"
-            />
-            <p>{item.description}</p>
-            <p className="mt-2">
-              Current Bid:{" "}
-              <strong>${item.currentPrice || item.basePrice}</strong>
-            </p>
-            <p>Status: {item.isClosed ? "Closed" : "Open"}</p>
-            <TimeLeft endTime={item.endDate} />
-            <Link
-              to={`/item/${item._id}`}
-              className="btn-primary mt-2 inline-block"
-            >
-              {item.isClosed ? "View Details" : "Place Bid"}
-            </Link>
+      <div className="auction-items-container" style={{ flexDirection: 'column', alignItems: 'center', display: 'flex' }}>
+        {filteredItems.map((item, idx) => (
+          <div key={item._id + '-wrapper'} style={{width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
+            <div className="auction-item-card" style={{maxWidth: '370px', width: '100%'}}>
+              <h2 className="auction-item-title">{item.title}</h2>
+              <img
+                src={item.imageUrl}
+                alt={item.title}
+                className="w-full h-40 object-cover my-2"
+              />
+              <p className="auction-item-description">{item.description}</p>
+              <p className="auction-item-price">
+                Current Bid: <strong>${item.currentPrice || item.basePrice}</strong>
+              </p>
+              <p className="auction-item-status">Status: {item.isClosed ? "Closed" : "Open"}</p>
+              <TimeLeft endTime={item.endDate} />
+              <div className="auction-item-actions">
+                {item.isClosed ? (
+                  <Link
+                    to={`/item/${item._id}`}
+                    className="btn-primary"
+                  >
+                    View Details
+                  </Link>
+                ) : (
+                  <button
+                    className="btn-bid"
+                    onClick={() => window.location.href = `/item/${item._id}`}
+                  >
+                    Place Bid
+                  </button>
+                )}
+              </div>
+            </div>
+            {idx < filteredItems.length - 1 && (
+              <div style={{width: '80%', borderBottom: '3px solid #222', margin: '2rem auto'}}></div>
+            )}
           </div>
         ))}
       </div>
