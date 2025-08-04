@@ -1,30 +1,20 @@
-name: Deploy to Firebase Hosting on merge
-on:
-  push:
-    branches:
-      - main
-
 jobs:
-  build_and_deploy:
+  build_and_preview:
+    if: ${{ github.event.pull_request.head.repo.full_name == github.repository }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-
-      # Go to frontend folder
       - name: Install dependencies
         run: |
-          cd frontend
+          cd client
           npm install
-
-      - name: Build the app
+      - name: Build React app
         run: |
-          cd frontend
+          cd client
           npm run build
-
-      - name: Deploy to Firebase Hosting
-        uses: FirebaseExtended/action-hosting-deploy@v0
+      - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: ${{ secrets.GITHUB_TOKEN }}
           firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_SILENTAUCTIONAPP_4CA96 }}
-          channelId: live
           projectId: silentauctionapp-4ca96
+          target: default
