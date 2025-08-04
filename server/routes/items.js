@@ -150,28 +150,26 @@ router.patch('/:id/close', verifyToken, async (req, res) => {
 
 // Delete an auction (admin only)
 router.delete('/:id', verifyToken, async (req, res) => {
-  const user = req.user;
-  
-  // Check if user is admin
-  if (user.email !== process.env.ADMIN_EMAIL) {
-    return res.status(403).json({ message: "Not authorized" });
-  }
-
   try {
+    // Check if user is admin
+    if (req.user.email !== process.env.ADMIN_EMAIL) {
+      return res.status(403).json({ message: "Only admin can delete auctions" });
+    }
+
     const item = await AuctionItem.findById(req.params.id);
     if (!item) {
       return res.status(404).json({ message: "Item not found" });
     }
 
-    // Delete associated bids
+    // Delete associated bids first
     await Bid.deleteMany({ item: req.params.id });
     
-    // Delete the item
+    // Then delete the item
     await AuctionItem.findByIdAndDelete(req.params.id);
     
     res.json({ message: "Auction deleted successfully" });
   } catch (err) {
-    console.error(err);
+    console.error('Delete error:', err);
     res.status(500).json({ message: "Failed to delete auction" });
   }
 });

@@ -10,16 +10,29 @@ export default function AdminDashboard() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Check if user is admin
-    if (!currentUser || currentUser.email !== process.env.REACT_APP_ADMIN_EMAIL) {
-      navigate('/');
-      return;
-    }
+    const checkAdmin = async () => {
+      if (!currentUser) {
+        navigate('/login');
+        return;
+      }
 
-    api.get("/api/items")
-      .then(res => setItems(res.data))
-      .catch(err => console.error("Failed to fetch items:", err))
-      .finally(() => setLoading(false));
+      if (currentUser.email !== process.env.REACT_APP_ADMIN_EMAIL) {
+        navigate('/');
+        return;
+      }
+
+      try {
+        const res = await api.get("/api/items");
+        setItems(res.data);
+      } catch (err) {
+        console.error("Failed to fetch items:", err);
+        alert("Error loading items");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    checkAdmin();
   }, [currentUser, navigate]);
 
   const closeAuction = async (itemId) => {
