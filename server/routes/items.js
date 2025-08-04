@@ -3,7 +3,7 @@ const router = express.Router();
 const AuctionItem = require('../models/AuctionItem');
 const Bid = require('../models/Bid');
 const verifyToken = require('../middlewares/verifyToken');
-const nodemailer = require('nodemailer');
+const { sendWinnerEmail } = require('../utils/email');
 
 // Get all auction items
 router.get('/', async (req, res) => {
@@ -13,9 +13,30 @@ router.get('/', async (req, res) => {
     // Check and update auction status based on endDate
     for (let item of items) {
       if (!item.isClosed && item.endDate && new Date() >= new Date(item.endDate)) {
+        // Close auction
         await AuctionItem.findByIdAndUpdate(item._id, { isClosed: true });
         item.isClosed = true;
-        
+
+        // Find winning bid
+        const winningBid = await Bid.find({ item: item._id }).sort({ amount: -1, timestamp: 1 }).limit(1);
+        let winnerEmail = null;
+        if (winningBid.length > 0) {
+          winnerEmail = winningBid[0].userEmail;
+        }
+        // Save winner email to item
+        await AuctionItem.findByIdAndUpdate(item._id, { winnerEmail });
+
+        // Send winner email
+        if (winnerEmail) {
+          try {
+            await sendWinnerEmail(winnerEmail, item.title);
+            console.log(`Winner notification email sent to ${winnerEmail}`);
+          } catch (err) {
+            console.error('Failed to send winner email:', err);
+          }
+        }
+
+        // Notify via socket
         const io = req.app.get('socketio');
         if (io) {
           io.emit('auctionEnded', item._id);
@@ -128,38 +149,19 @@ router.patch('/:id/close', verifyToken, async (req, res) => {
 
     const winningBid = await Bid.find({ item: item._id }).sort({ amount: -1, timestamp: 1 }).limit(1);
     let winnerEmail = null;
-
     if (winningBid.length > 0) {
       winnerEmail = winningBid[0].userEmail;
     }
-
     item.isClosed = true;
     item.winnerEmail = winnerEmail;
     await item.save();
 
     if (winnerEmail) {
-      const transporter = nodemailer.createTransport({
-        host: process.env.SMTP_HOST,
-        port: Number(process.env.SMTP_PORT) || 587,
-        secure: false,
-        auth: {
-          user: process.env.SMTP_USER,
-          pass: process.env.SMTP_PASS
-        }
-      });
-
-      const mailOptions = {
-        from: process.env.FROM_EMAIL || '"Auction App" <no-reply@auction.com>',
-        to: winnerEmail,
-        subject: `Congratulations! You won the auction for "${item.title}"`,
-        text: `Dear bidder,\n\nCongratulations! Your bid of $${item.title} is the highest for "${item.title}".\n\nWe will contact you with further details.\n\nBest regards,\nSilent Auction Team`
-      };
-
       try {
-        await transporter.sendMail(mailOptions);
+        await sendWinnerEmail(winnerEmail, item.title);
         console.log(`Winner notification email sent to ${winnerEmail}`);
-      } catch (emailErr) {
-        console.error("Failed to send winner email:", emailErr);
+      } catch (err) {
+        console.error('Failed to send winner email:', err);
       }
     }
 
