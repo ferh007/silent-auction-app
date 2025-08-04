@@ -6,21 +6,16 @@ import api from "../api";
 export default function AdminDashboard() {
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
-  const { currentUser } = useAuth();
+  const { currentUser, isAdmin } = useAuth();
   const navigate = useNavigate();
 
   useEffect(() => {
-    const checkAdmin = async () => {
-      if (!currentUser) {
-        navigate('/login');
-        return;
-      }
+    if (!currentUser || !isAdmin) {
+      navigate('/');
+      return;
+    }
 
-      if (currentUser.email !== process.env.REACT_APP_ADMIN_EMAIL) {
-        navigate('/');
-        return;
-      }
-
+    const fetchItems = async () => {
       try {
         const res = await api.get("/api/items");
         setItems(res.data);
@@ -32,8 +27,8 @@ export default function AdminDashboard() {
       }
     };
 
-    checkAdmin();
-  }, [currentUser, navigate]);
+    fetchItems();
+  }, [currentUser, isAdmin, navigate]);
 
   const closeAuction = async (itemId) => {
     if (!window.confirm("Close this auction? This will determine a winner.")) return;

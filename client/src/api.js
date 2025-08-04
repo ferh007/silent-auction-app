@@ -8,13 +8,10 @@ const api = axios.create({
 // Inject Firebase token
 api.interceptors.request.use(async (config) => {
   const auth = getAuth();
-  const user = auth.currentUser;
-  
-  if (user) {
-    const token = await user.getIdToken();
+  if (auth.currentUser) {
+    const token = await auth.currentUser.getIdToken();
     config.headers.Authorization = `Bearer ${token}`;
   }
-  
   return config;
 }, (error) => {
   return Promise.reject(error);
