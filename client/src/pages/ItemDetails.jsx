@@ -2,6 +2,53 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import api from "../api";
 
+// Timer component for auction end
+function TimeLeft({ endDate }) {
+  const [timeLeft, setTimeLeft] = useState('Calculating...');
+
+  useEffect(() => {
+    const updateTimer = () => {
+      if (!endDate) {
+        setTimeLeft('No end date set');
+        return;
+      }
+      const now = new Date().getTime();
+      const end = new Date(endDate).getTime();
+      const difference = end - now;
+      if (isNaN(difference)) {
+        setTimeLeft('Invalid date');
+        return;
+      }
+      if (difference <= 0) {
+        setTimeLeft('Auction ended');
+        return;
+      }
+      const days = Math.floor(difference / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((difference % (1000 * 60)) / 1000);
+      setTimeLeft(`${days}d ${hours}h ${minutes}m ${seconds}s`);
+    };
+    updateTimer();
+    const timer = setInterval(updateTimer, 1000);
+    return () => clearInterval(timer);
+  }, [endDate]);
+
+  return (
+    <div className="my-2 p-2 bg-gray-50 rounded text-center">
+      <span className="font-semibold">Time Remaining:</span><br />
+      <span className={`
+        ${timeLeft === 'Auction ended' ? 'text-red-600' : 
+          timeLeft === 'No end date set' || timeLeft === 'Invalid date' ? 'text-gray-600' :
+          'text-blue-600'
+        } font-bold text-lg`}
+      >
+        {timeLeft}
+      </span>
+    </div>
+  );
+}
+
 export default function ItemDetails() {
   const { id } = useParams();
   const [item, setItem] = useState(null);
@@ -89,7 +136,8 @@ export default function ItemDetails() {
       <p>{item.description}</p>
       <p>Status: {item.isClosed ? "Closed" : "Open"}</p>
       <p>Highest Bid: <strong>${highestBid}</strong> {item.currentBidder && `by ${item.currentBidder}`}</p>
-
+      {/* Timer above the bid form */}
+      <TimeLeft endDate={item.endDate} />
       {!item.isClosed ? (
         <form onSubmit={onBidSubmit} className="mt-4">
           <input
