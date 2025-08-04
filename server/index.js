@@ -4,6 +4,7 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const http = require('http');
 require('dotenv').config();
+console.log('Admin email configured as:', process.env.ADMIN_EMAIL);
 
 const app = express();
 const server = http.createServer(app);  // for integrating Socket.io

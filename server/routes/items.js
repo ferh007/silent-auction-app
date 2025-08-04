@@ -151,6 +151,13 @@ router.patch('/:id/close', verifyToken, async (req, res) => {
 // Delete an auction (admin only)
 router.delete('/:id', verifyToken, async (req, res) => {
   try {
+    // Debug logging
+    console.log({
+      requestEmail: req.user.email,
+      envAdminEmail: process.env.ADMIN_EMAIL,
+      isMatch: req.user.email === process.env.ADMIN_EMAIL
+    });
+
     // Check if user is admin
     if (req.user.email !== process.env.ADMIN_EMAIL) {
       console.log('Unauthorized delete attempt by:', req.user.email);
