@@ -9,6 +9,21 @@ const nodemailer = require('nodemailer');
 router.get('/', async (req, res) => {
   try {
     const items = await AuctionItem.find().lean();
+    
+    // Check and update auction status based on endTime
+    for (let item of items) {
+      if (!item.isClosed && item.endTime && new Date() >= new Date(item.endTime)) {
+        await AuctionItem.findByIdAndUpdate(item._id, { isClosed: true });
+        item.isClosed = true;
+        
+        // Emit auction ended event
+        const io = req.app.get('socketio');
+        if (io) {
+          io.emit('auctionEnded', item._id);
+        }
+      }
+    }
+    
     res.json(items);
   } catch (err) {
     console.error(err);
@@ -48,6 +63,14 @@ router.post('/:id/bid', verifyToken, async (req, res) => {
   try {
     const item = await AuctionItem.findById(id);
     if (!item) return res.status(404).json({ message: "Item not found" });
+    
+    // Check if auction has ended based on endTime
+    if (item.hasEnded()) {
+      item.isClosed = true;
+      await item.save();
+      return res.status(400).json({ message: "Auction has ended" });
+    }
+
     if (item.isClosed) {
       return res.status(400).json({ message: "Auction is closed" });
     }
@@ -204,11 +227,25 @@ router.post('/', verifyToken, async (req, res) => {
       return res.status(403).json({ message: "Only admin can create auctions" });
     }
 
-    const { title, description, imageUrl, basePrice, endDate } = req.body;
+    const { title, description, imageUrl, basePrice, endTime } = req.body;
 
     // Validate required fields
     if (!title || !description || !basePrice) {
       return res.status(400).json({ message: "Missing required fields" });
+    }
+
+    // Validate endTime
+    if (!endTime) {
+      return res.status(400).json({ message: "End time is required" });
+    }
+
+    const endTimeDate = new Date(endTime);
+    if (isNaN(endTimeDate.getTime())) {
+      return res.status(400).json({ message: "Invalid end time format" });
+    }
+
+    if (endTimeDate <= new Date()) {
+      return res.status(400).json({ message: "End time must be in the future" });
     }
 
     const newItem = new AuctionItem({
@@ -216,7 +253,7 @@ router.post('/', verifyToken, async (req, res) => {
       description,
       imageUrl,
       basePrice,
-      endDate: endDate ? new Date(endDate) : null,
+      endTime: endTimeDate,
       createdBy: req.user.email
     });
 

@@ -3,44 +3,22 @@ import { useParams } from "react-router-dom";
 import api from "../api";
 
 export default function ItemDetails() {
-  const { id } = useParams(); // item ID from URL
+  const { id } = useParams();
   const [item, setItem] = useState(null);
   const [bids, setBids] = useState([]);
   const [newBid, setNewBid] = useState("");
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    // Fetch item details and bid history
     api.get(`/api/items/${id}`)
       .then(res => {
         setItem(res.data.item);
         setBids(res.data.bids);
       })
       .catch(err => console.error("Error loading item:", err));
-
-    // Real-time updates via Socket.io
-    const sock = window.socket;
-    if (sock) {
-      const handleBidUpdate = (data) => {
-        if (data.itemId === id) {
-          setItem(prev => prev ? { ...prev, currentPrice: data.amount, currentBidder: data.userEmail } : prev);
-          setBids(prev => [...prev, {
-            userEmail: data.userEmail,
-            amount: data.amount,
-            timestamp: data.timestamp
-          }]);
-        }
-      };
-      sock.on("bidUpdate", handleBidUpdate);
-      return () => {
-        sock.off("bidUpdate", handleBidUpdate);
-      };
-    }
   }, [id]);
 
-  if (!item) return <div>Loading...</div>;
-
-  const highestBid = item.currentPrice || item.basePrice;
+  const highestBid = item?.currentPrice || item?.basePrice;
 
   const onBidSubmit = async (e) => {
     e.preventDefault();
@@ -94,6 +72,8 @@ export default function ItemDetails() {
     }
   };
 
+  if (!item) return <div>Loading...</div>;
+
   return (
     <div className="p-4">
       <h2 className="text-2xl font-bold">{item.title}</h2>
@@ -127,7 +107,7 @@ export default function ItemDetails() {
             className="btn-primary disabled:opacity-50"
             disabled={loading}
           >
-            Place Bid
+            {loading ? "Placing Bid..." : "Place Bid"}
           </button>
         </form>
       ) : (
@@ -146,3 +126,7 @@ export default function ItemDetails() {
     </div>
   );
 }
+
+
+
+
