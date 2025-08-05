@@ -27,9 +27,21 @@
   cursor: pointer;
   transition: background 0.2s;
 }
-.admin-btn:hover {
-  background: #218838;
+/* Center the form and prevent overflow */
+.admin-form {
+  background: #fff;
+  border-radius: 18px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+  padding: 2rem;
+  margin: 2rem auto;
+  width: 100%;
+  max-width: 700px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-sizing: border-box;
 }
+
 .admin-form {
   background: #fff;
   border-radius: 16px;
@@ -39,14 +51,29 @@
   margin-bottom: 2rem;
   max-width: 700px;
   width: 100%;
-  margin-left: auto;
-  margin-right: auto;
+/* Ensure input fields do not escape the form */
+.admin-form-input {
+  width: 100%;
+  max-width: 100%;
+  padding: 0.7rem 1rem;
+  border-radius: 8px;
+  border: 1px solid #d1d5db;
+  font-size: 1rem;
+  margin-top: 0.3rem;
+  margin-bottom: 0.7rem;
+  box-sizing: border-box;
 }
-.admin-form-label {
-  font-weight: 500;
-  color: #444;
-  margin-bottom: 0.5rem;
-  display: block;
+.admin-form-textarea {
+  width: 100%;
+  max-width: 100%;
+  padding: 0.7rem 1rem;
+  border-radius: 8px;
+  border: 1px solid #d1d5db;
+  font-size: 1rem;
+  margin-top: 0.3rem;
+  margin-bottom: 0.7rem;
+  box-sizing: border-box;
+}
 }
 .admin-form-input,
 .admin-form-textarea {

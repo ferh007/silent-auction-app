@@ -120,14 +120,16 @@ export default function AuctionList() {
 
   return (
     <div className={styles["auction-bg"]}>
-      <h1 className={styles["auction-title"]}>Auction Items</h1>
-      <input
-        type="text"
-        placeholder="Search items..."
-        className={styles["search-input"]}
-        value={search}
-        onChange={e => setSearch(e.target.value)}
-      />
+      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%' }}>
+        <h1 className={styles["auction-title"]}>Auction Items</h1>
+        <input
+          type="text"
+          placeholder="Search items..."
+          className={styles["search-input"]}
+          value={search}
+          onChange={e => setSearch(e.target.value)}
+        />
+      </div>
       <div className={styles["auction-items-container"]}>
         {filteredItems.map((item, idx) => (
           <div key={item._id + '-wrapper'} className={styles["auction-item-wrapper"]}>

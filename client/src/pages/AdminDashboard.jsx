@@ -132,12 +132,6 @@ export default function AdminDashboard() {
     <div className={styles["admin-bg"]}>
       <div className={styles["admin-header"]}>
         <h1 className={styles["admin-title"]}>Admin Dashboard</h1>
-        <button
-          onClick={() => setShowForm(!showForm)}
-          className={styles["admin-btn"]}
-        >
-          {showForm ? 'Cancel' : 'Add New Item'}
-        </button>
       </div>
 
       {showForm && (
@@ -208,6 +202,14 @@ export default function AdminDashboard() {
             >
               Create Auction Item
             </button>
+            <button
+              type="button"
+              onClick={() => setShowForm(false)}
+              className={styles["admin-btn"]}
+              style={{ marginLeft: '1rem', background: '#ccc', color: '#333' }}
+            >
+              Cancel
+            </button>
           </div>
         </form>
       )}
@@ -247,6 +249,17 @@ export default function AdminDashboard() {
           ))}
         </tbody>
       </table>
+
+      {!showForm && (
+        <div style={{ display: 'flex', justifyContent: 'center', marginTop: '2rem' }}>
+          <button
+            onClick={() => setShowForm(true)}
+            className={styles["admin-btn"]}
+          >
+            Add New Item
+          </button>
+        </div>
+      )}
     </div>
   );
 }
