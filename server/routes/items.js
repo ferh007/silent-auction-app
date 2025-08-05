@@ -3,7 +3,7 @@ const router = express.Router();
 const AuctionItem = require('../models/AuctionItem');
 const Bid = require('../models/Bid');
 const verifyToken = require('../middlewares/verifyToken');
-const { sendWinnerEmail } = require('../utils/email');
+const { sendWinnerEmail, sendOutbidEmail } = require('../utils/email');
 
 // Get all auction items
 router.get('/', async (req, res) => {
@@ -101,6 +101,10 @@ router.post('/:id/bid', verifyToken, async (req, res) => {
       return res.status(400).json({ message: `Bid must be higher than current price ($${currentPrice})` });
     }
 
+    // Store previous bidder info for outbid notification
+    const previousBidder = item.currentBidder;
+    const previousBidAmount = item.currentPrice;
+
     const bid = await Bid.create({
       item: id,
       userId: user.uid,
@@ -112,6 +116,17 @@ router.post('/:id/bid', verifyToken, async (req, res) => {
     item.currentPrice = bidAmount;
     item.currentBidder = user.email;
     await item.save();
+
+    // Send outbid notification to previous highest bidder
+    if (previousBidder && previousBidder !== user.email) {
+      try {
+        await sendOutbidEmail(previousBidder, item.title, bidAmount, previousBidAmount);
+        console.log(`Outbid notification sent to ${previousBidder}`);
+      } catch (err) {
+        console.error('Failed to send outbid email:', err);
+        // Don't fail the bid if email fails
+      }
+    }
 
     // Safely emit socket event
     const io = req.app.get('socketio');

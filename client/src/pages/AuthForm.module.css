@@ -74,9 +74,18 @@
   width: 100%;
 }
 .auth-link {
-  color: #4299e1;
+  color: #38b000;
   font-weight: 600;
-  text-decoration: none;
+  text-decoration: underline;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1rem;
+  padding: 0;
+  transition: color 0.2s;
+}
+.auth-link:hover {
+  color: #2d7a00;
 }
 .auth-footer {
   text-align: center;

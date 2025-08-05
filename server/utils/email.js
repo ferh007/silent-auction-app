@@ -30,4 +30,23 @@ function sendWinnerEmail(to, itemName) {
     });
 }
 
-module.exports = { sendWinnerEmail };
+function sendOutbidEmail(to, itemName, newBidAmount, yourBidAmount) {
+  const mailOptions = {
+    from: process.env.FROM_EMAIL,
+    to,
+    subject: `You've been outbid on ${itemName}`,
+    text: `Dear bidder,\n\nYour bid of $${yourBidAmount} on "${itemName}" has been outbid. The new highest bid is $${newBidAmount}.\n\nYou can place a new bid to stay in the running!\n\nThank you for participating!`,
+  };
+  console.log('Attempting to send outbid email:', mailOptions);
+  return transporter.sendMail(mailOptions)
+    .then(info => {
+      console.log('Outbid email sent:', info);
+      return info;
+    })
+    .catch(error => {
+      console.error('Outbid email send error:', error);
+      throw error;
+    });
+}
+
+module.exports = { sendWinnerEmail, sendOutbidEmail };

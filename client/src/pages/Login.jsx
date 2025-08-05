@@ -1,15 +1,17 @@
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { signInWithEmailAndPassword } from "firebase/auth";
+import { signInWithEmailAndPassword, sendPasswordResetEmail } from "firebase/auth";
 import { auth } from "../firebase";
 import { useAuth } from "../contexts/AuthContext";
 import styles from "./AuthForm.module.css";
-
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [showReset, setShowReset] = useState(false);
+  const [resetEmail, setResetEmail] = useState("");
+  const [resetMsg, setResetMsg] = useState("");
   const navigate = useNavigate();
   const { currentUser, isAdmin } = useAuth();
 
@@ -92,11 +94,72 @@ export default function Login() {
           >
             {loading ? "Signing in..." : "Sign In"}
           </button>
+          <div style={{ marginTop: '1rem', textAlign: 'center' }}>
+            <button
+              type="button"
+              className={styles["auth-link"]}
+              style={{ background: 'none', border: 'none', color: '#4299e1', cursor: 'pointer', fontSize: '1rem', padding: 0, fontWeight: 600, textDecoration: 'underline' }}
+              onClick={() => setShowReset(true)}
+            >
+              Forgot password?
+            </button>
+          </div>
           <p className={styles["auth-footer"]}>
             Don't have an account?{' '}
             <Link to="/register" className={styles["auth-link"]}>Register</Link>
           </p>
         </form>
+
+        {/* Password Reset Modal */}
+        {showReset && (
+          <div className={styles["auth-modal"]}>
+            <div className={styles["auth-modal-content"]}>
+              <h3 className={styles["auth-title"]}>Reset Password</h3>
+              {resetMsg && <div className={styles["auth-success"]}>{resetMsg}</div>}
+              <input
+                type="email"
+                placeholder="Enter your email"
+                value={resetEmail}
+                onChange={e => setResetEmail(e.target.value)}
+                className={styles["auth-input"]}
+                style={{ marginBottom: '1rem' }}
+              />
+              <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '1rem' }}>
+                <button
+                  type="button"
+                  className={styles["auth-btn"]}
+                  onClick={async () => {
+                    setResetMsg("");
+                    if (!resetEmail || !resetEmail.includes("@")) {
+                      setResetMsg("Please enter a valid email address.");
+                      return;
+                    }
+                    try {
+                      await sendPasswordResetEmail(auth, resetEmail);
+                      setResetMsg("Password reset email sent! Check your inbox.");
+                    } catch (err) {
+                      setResetMsg("Failed to send reset email. " + (err.message || "Try again later."));
+                    }
+                  }}
+                >
+                  Send Reset Email
+                </button>
+                <button
+                  type="button"
+                  className={styles["auth-btn"]}
+                  style={{ background: '#ccc', color: '#333' }}
+                  onClick={() => {
+                    setShowReset(false);
+                    setResetEmail("");
+                    setResetMsg("");
+                  }}
+                >
+                  Cancel
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
