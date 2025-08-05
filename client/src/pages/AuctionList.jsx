@@ -113,9 +113,16 @@ export default function AuctionList() {
   };
 
   const filteredItems = Array.isArray(items)
-    ? items.filter(item =>
-        item.title?.toLowerCase().includes(search.toLowerCase())
-      )
+    ? items
+        .filter(item => item.title?.toLowerCase().includes(search.toLowerCase()))
+        .sort((a, b) => {
+          const aEnd = new Date(a.endDate).getTime();
+          const bEnd = new Date(b.endDate).getTime();
+          // If either date is invalid, treat as far future
+          if (isNaN(aEnd)) return 1;
+          if (isNaN(bEnd)) return -1;
+          return aEnd - bEnd;
+        })
     : [];
 
   return (
