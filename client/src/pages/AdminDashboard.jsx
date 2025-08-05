@@ -136,7 +136,7 @@ export default function AdminDashboard() {
 
       {showForm && (
         <form onSubmit={handleSubmit} className={styles["admin-form"]}>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.2rem' }}>
+          <div className={styles["admin-form-grid"]}>
             <div>
               <label className={styles["admin-form-label"]}>Title</label>
               <input
@@ -183,7 +183,7 @@ export default function AdminDashboard() {
                 required
               />
             </div>
-            <div style={{ gridColumn: '1 / span 2' }}>
+            <div>
               <label className={styles["admin-form-label"]}>Description</label>
               <textarea
                 name="description"
