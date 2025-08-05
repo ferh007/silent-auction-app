@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import api from "../api";
+import styles from "./ItemDetails.module.css";
 
 // Timer component for auction end
 function TimeLeft({ endDate }) {
@@ -122,55 +123,57 @@ export default function ItemDetails() {
   if (!item) return <div>Loading...</div>;
 
   return (
-    <div className="p-4">
-      <h2 className="text-2xl font-bold">{item.title}</h2>
-      <img 
-        src={item.imageUrl || 'https://placehold.co/300x200'} 
-        alt={item.title}
-        className="w-full max-w-md my-4"
-        onError={(e) => {
-          e.target.src = 'https://placehold.co/300x200';
-          e.target.onerror = null;
-        }}
-      />
-      <p>{item.description}</p>
-      <p>Status: {item.isClosed ? "Closed" : "Open"}</p>
-      <p>Highest Bid: <strong>${highestBid}</strong> {item.currentBidder && `by ${item.currentBidder}`}</p>
-      {/* Timer above the bid form */}
-      <TimeLeft endDate={item.endDate} />
-      {!item.isClosed ? (
-        <form onSubmit={onBidSubmit} className="mt-4">
-          <input
-            type="number"
-            step="0.01"
-            min={highestBid + 0.01}
-            value={newBid}
-            onChange={e => setNewBid(e.target.value)}
-            className="border p-2 mr-2"
-            required
-            disabled={loading}
-          />
-          <button 
-            type="submit" 
-            className="btn-bid disabled:opacity-50"
-            disabled={loading}
-          >
-            {loading ? "Placing Bid..." : "Place Bid"}
-          </button>
-        </form>
-      ) : (
-        <p className="mt-4 text-red-600">This auction is closed.</p>
-      )}
+    <div className={styles["details-bg"]}>
+      <div className={styles["details-card"]}>
+        <h2 className={styles["details-title"]}>{item.title}</h2>
+        <img 
+          src={item.imageUrl || 'https://placehold.co/300x200'} 
+          alt={item.title}
+          className={styles["details-img"]}
+          onError={(e) => {
+            e.target.src = 'https://placehold.co/300x200';
+            e.target.onerror = null;
+          }}
+        />
+        <p className={styles["details-desc"]}>{item.description}</p>
+        <p className={styles["details-status"]}>Status: {item.isClosed ? "Closed" : "Open"}</p>
+        <p className={styles["details-price"]}>Highest Bid: <strong>${highestBid}</strong> {item.currentBidder && `by ${item.currentBidder}`}</p>
+        {/* Timer above the bid form */}
+        <TimeLeft endDate={item.endDate} />
+        {!item.isClosed ? (
+          <form onSubmit={onBidSubmit} className={styles["details-form"]}>
+            <input
+              type="number"
+              step="0.01"
+              min={highestBid + 0.01}
+              value={newBid}
+              onChange={e => setNewBid(e.target.value)}
+              className={styles["details-input"]}
+              required
+              disabled={loading}
+            />
+            <button 
+              type="submit" 
+              className={styles["details-btn"]}
+              disabled={loading}
+            >
+              {loading ? "Placing Bid..." : "Place Bid"}
+            </button>
+          </form>
+        ) : (
+          <p className={styles["details-error"]}>This auction is closed.</p>
+        )}
 
-      <h3 className="text-xl font-semibold mt-6">Bid History</h3>
-      <ul className="list-disc ml-5">
-        {bids.map((bid, idx) => (
-          <li key={idx}>
-            <strong>${bid.amount}</strong> – {bid.userEmail} at {new Date(bid.timestamp).toLocaleString()}
-          </li>
-        ))}
-        {bids.length === 0 && <li>No bids yet.</li>}
-      </ul>
+        <h3 className={styles["details-history-title"]}>Bid History</h3>
+        <ul className={styles["details-history-list"]}>
+          {bids.map((bid, idx) => (
+            <li key={idx}>
+              <strong>${bid.amount}</strong> – {bid.userEmail} at {new Date(bid.timestamp).toLocaleString()}
+            </li>
+          ))}
+          {bids.length === 0 && <li>No bids yet.</li>}
+        </ul>
+      </div>
     </div>
   );
 }

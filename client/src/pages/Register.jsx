@@ -2,6 +2,7 @@ import { useState } from "react";
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { auth } from "../firebase"; // adjust path if needed
 import { useNavigate } from "react-router-dom";
+import styles from "./AuthForm.module.css";
 
 export default function Register() {
   const navigate = useNavigate();
@@ -29,39 +30,50 @@ export default function Register() {
   };
 
   return (
-    <div className="p-6 max-w-md mx-auto">
-      <h2 className="text-2xl font-bold mb-4">Register</h2>
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <input
-          type="text"
-          name="displayName"
-          placeholder="Name"
-          value={form.displayName}
-          onChange={handleChange}
-          required
-          className="w-full border p-2"
-        />
-        <input
-          type="email"
-          name="email"
-          placeholder="Email"
-          value={form.email}
-          onChange={handleChange}
-          required
-          className="w-full border p-2"
-        />
-        <input
-          type="password"
-          name="password"
-          placeholder="Password"
-          value={form.password}
-          onChange={handleChange}
-          required
-          className="w-full border p-2"
-        />
-        <button type="submit" className="btn-primary w-full">Register</button>
-      </form>
-      {error && <p className="text-red-500 mt-4">{error}</p>}
+    <div className={styles["auth-bg"]}>
+      <div className={styles["auth-card"]}>
+        <form onSubmit={handleSubmit} style={{ width: '100%' }}>
+          <h2 className={styles["auth-title"]}>Register</h2>
+          <div style={{ marginBottom: '1.2rem' }}>
+            <label className={styles["auth-label"]}>Name</label>
+            <input
+              type="text"
+              name="displayName"
+              placeholder="Name"
+              value={form.displayName}
+              onChange={handleChange}
+              required
+              className={styles["auth-input"]}
+            />
+          </div>
+          <div style={{ marginBottom: '1.2rem' }}>
+            <label className={styles["auth-label"]}>Email</label>
+            <input
+              type="email"
+              name="email"
+              placeholder="Email"
+              value={form.email}
+              onChange={handleChange}
+              required
+              className={styles["auth-input"]}
+            />
+          </div>
+          <div style={{ marginBottom: '1.2rem' }}>
+            <label className={styles["auth-label"]}>Password</label>
+            <input
+              type="password"
+              name="password"
+              placeholder="Password"
+              value={form.password}
+              onChange={handleChange}
+              required
+              className={styles["auth-input"]}
+            />
+          </div>
+          <button type="submit" className={`${styles["auth-btn"]} ${styles["auth-btn-green"]}`}>Register</button>
+        </form>
+        {error && <div className={styles["auth-error"]}>{error}</div>}
+      </div>
     </div>
   );
 }

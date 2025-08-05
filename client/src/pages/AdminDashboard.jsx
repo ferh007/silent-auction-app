@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
 import api from "../api";
+import styles from "./AdminDashboard.module.css";
 
 export default function AdminDashboard() {
   const [items, setItems] = useState([]);
@@ -128,44 +129,44 @@ export default function AdminDashboard() {
   if (loading) return <div>Loading...</div>;
 
   return (
-    <div className="p-4">
-      <div className="flex justify-between items-center mb-4">
-        <h1 className="text-2xl font-bold">Admin Dashboard</h1>
+    <div className={styles["admin-bg"]}>
+      <div className={styles["admin-header"]}>
+        <h1 className={styles["admin-title"]}>Admin Dashboard</h1>
         <button
           onClick={() => setShowForm(!showForm)}
-          className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
+          className={styles["admin-btn"]}
         >
           {showForm ? 'Cancel' : 'Add New Item'}
         </button>
       </div>
 
       {showForm && (
-        <form onSubmit={handleSubmit} className="mb-8 bg-white p-4 rounded shadow">
-          <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+        <form onSubmit={handleSubmit} className={styles["admin-form"]}>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.2rem' }}>
             <div>
-              <label className="block mb-1">Title</label>
+              <label className={styles["admin-form-label"]}>Title</label>
               <input
                 type="text"
                 name="title"
                 value={newItem.title}
                 onChange={handleChange}
-                className="w-full border rounded p-2"
+                className={styles["admin-form-input"]}
                 required
               />
             </div>
             <div>
-              <label className="block mb-1">Image URL</label>
+              <label className={styles["admin-form-label"]}>Image URL</label>
               <input
                 type="url"
                 name="imageUrl"
                 value={newItem.imageUrl}
                 onChange={handleChange}
-                className="w-full border rounded p-2"
+                className={styles["admin-form-input"]}
                 required
               />
             </div>
             <div>
-              <label className="block mb-1">Base Price ($)</label>
+              <label className={styles["admin-form-label"]}>Base Price ($)</label>
               <input
                 type="number"
                 name="basePrice"
@@ -173,37 +174,37 @@ export default function AdminDashboard() {
                 onChange={handleChange}
                 min="0"
                 step="0.01"
-                className="w-full border rounded p-2"
+                className={styles["admin-form-input"]}
                 required
               />
             </div>
             <div>
-              <label className="block mb-1">End Date</label>
+              <label className={styles["admin-form-label"]}>End Date</label>
               <input
                 type="datetime-local"
                 name="endDate"
                 value={newItem.endDate}
                 onChange={handleChange}
-                className="w-full border rounded p-2"
+                className={styles["admin-form-input"]}
                 required
               />
             </div>
-            <div className="md:col-span-2">
-              <label className="block mb-1">Description</label>
+            <div style={{ gridColumn: '1 / span 2' }}>
+              <label className={styles["admin-form-label"]}>Description</label>
               <textarea
                 name="description"
                 value={newItem.description}
                 onChange={handleChange}
-                className="w-full border rounded p-2"
+                className={styles["admin-form-textarea"]}
                 rows="3"
                 required
               />
             </div>
           </div>
-          <div className="mt-4 flex justify-end">
+          <div className={styles["admin-form-actions"]}>
             <button
               type="submit"
-              className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+              className={styles["admin-btn"]}
             >
               Create Auction Item
             </button>
@@ -211,33 +212,33 @@ export default function AdminDashboard() {
         </form>
       )}
 
-      <table className="min-w-full text-left">
+      <table className={styles["admin-table"]}>
         <thead>
-          <tr className="border-b">
-            <th className="py-2 px-2">Item</th>
-            <th className="py-2 px-2">Highest Bid</th>
-            <th className="py-2 px-2">Status</th>
-            <th className="py-2 px-2">Actions</th>
+          <tr>
+            <th>Item</th>
+            <th>Highest Bid</th>
+            <th>Status</th>
+            <th>Actions</th>
           </tr>
         </thead>
         <tbody>
           {items.map(item => (
-            <tr key={item._id} className="border-b">
-              <td className="py-1 px-2">{item.title}</td>
-              <td className="py-1 px-2">${item.currentPrice || item.basePrice}</td>
-              <td className="py-1 px-2">{item.isClosed ? "Closed" : "Open"}</td>
-              <td className="py-1 px-2 space-x-2">
+            <tr key={item._id}>
+              <td>{item.title}</td>
+              <td>${item.currentPrice || item.basePrice}</td>
+              <td>{item.isClosed ? "Closed" : "Open"}</td>
+              <td>
                 {!item.isClosed && (
                   <button
                     onClick={() => closeAuction(item._id)}
-                    className="btn-secondary bg-yellow-600 text-white px-2 py-1 rounded hover:bg-yellow-700"
+                    className={`${styles["admin-action-btn"]} ${styles["close"]}`}
                   >
                     Close
                   </button>
                 )}
                 <button
                   onClick={() => deleteAuction(item._id)}
-                  className="btn-secondary bg-red-600 text-white px-2 py-1 rounded hover:bg-red-700"
+                  className={`${styles["admin-action-btn"]} ${styles["delete"]}`}
                 >
                   Delete
                 </button>

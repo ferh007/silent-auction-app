@@ -1,0 +1,117 @@
+.admin-bg {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #f7fafc 0%, #e3e9f7 100%);
+  padding: 2rem 0;
+}
+.admin-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+.admin-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #222;
+  letter-spacing: 0.5px;
+}
+.admin-btn {
+  background: #38b000;
+  color: #fff;
+  padding: 0.7rem 1.5rem;
+  border-radius: 10px;
+  font-weight: 700;
+  font-size: 1rem;
+  border: none;
+  box-shadow: 0 4px 16px rgba(56,176,0,0.12);
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.admin-btn:hover {
+  background: #218838;
+}
+.admin-form {
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+  border: 2px solid #e2e8f0;
+  padding: 2rem 1.5rem;
+  margin-bottom: 2rem;
+  max-width: 700px;
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+}
+.admin-form-label {
+  font-weight: 500;
+  color: #444;
+  margin-bottom: 0.5rem;
+  display: block;
+}
+.admin-form-input,
+.admin-form-textarea {
+  width: 100%;
+  padding: 0.7rem 1rem;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  font-size: 1rem;
+  outline: none;
+  box-shadow: 0 2px 8px rgba(44,62,80,0.04);
+  margin-bottom: 1rem;
+}
+.admin-form-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 1rem;
+}
+.admin-table {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(44,62,80,0.04);
+  border: 1px solid #e2e8f0;
+  width: 100%;
+  max-width: 900px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 2rem;
+}
+.admin-table th,
+.admin-table td {
+  padding: 0.75rem 1rem;
+  text-align: left;
+}
+.admin-table th {
+  background: #f7fafc;
+  font-weight: 600;
+  color: #222;
+}
+.admin-table tr {
+  border-bottom: 1px solid #e2e8f0;
+}
+.admin-table tr:last-child {
+  border-bottom: none;
+}
+.admin-action-btn {
+  padding: 0.4rem 1rem;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 0.98rem;
+  border: none;
+  margin-right: 0.5rem;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.admin-action-btn.close {
+  background: #f6ad55;
+  color: #fff;
+}
+.admin-action-btn.close:hover {
+  background: #dd6b20;
+}
+.admin-action-btn.delete {
+  background: #e53e3e;
+  color: #fff;
+}
+.admin-action-btn.delete:hover {
+  background: #c53030;
+}

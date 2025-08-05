@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import api from "../api";
 import { Link } from "react-router-dom";
+import styles from "./AuctionList.module.css";
 
 function TimeLeft({ endTime, onEnd }) {
   const [timeLeft, setTimeLeft] = useState('Calculating...');
@@ -118,32 +119,32 @@ export default function AuctionList() {
     : [];
 
   return (
-    <div className="p-4">
-      <h1 className="text-2xl font-bold mb-4">Auction Items</h1>
+    <div className={styles["auction-bg"]}>
+      <h1 className={styles["auction-title"]}>Auction Items</h1>
       <input
         type="text"
         placeholder="Search items..."
-        className="border p-2 mb-4"
+        className={styles["search-input"]}
         value={search}
         onChange={e => setSearch(e.target.value)}
       />
-      <div className="auction-items-container" style={{ flexDirection: 'column', alignItems: 'center', display: 'flex' }}>
+      <div className={styles["auction-items-container"]}>
         {filteredItems.map((item, idx) => (
-          <div key={item._id + '-wrapper'} style={{width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
-            <div className="auction-item-card" style={{maxWidth: '370px', width: '100%'}}>
-              <h2 className="auction-item-title">{item.title}</h2>
+          <div key={item._id + '-wrapper'} className={styles["auction-item-wrapper"]}>
+            <div className={styles["auction-item-card"]}>
+              <h2 className={styles["auction-item-title"]}>{item.title}</h2>
               <img
                 src={item.imageUrl}
                 alt={item.title}
-                className="w-full h-40 object-cover my-2"
+                style={{ width: '100%', height: '180px', objectFit: 'cover', borderRadius: '8px', marginBottom: '1rem' }}
               />
-              <p className="auction-item-description">{item.description}</p>
-              <p className="auction-item-price">
+              <p className={styles["auction-item-description"]}>{item.description}</p>
+              <p className={styles["auction-item-price"]}>
                 Current Bid: <strong>${item.currentPrice || item.basePrice}</strong>
               </p>
-              <p className="auction-item-status">Status: {item.isClosed ? "Closed" : "Open"}</p>
+              <p className={styles["auction-item-status"]}>Status: {item.isClosed ? "Closed" : "Open"}</p>
               <TimeLeft endTime={item.endDate} />
-              <div className="auction-item-actions">
+              <div className={styles["auction-item-actions"]}>
                 {item.isClosed ? (
                   <Link
                     to={`/item/${item._id}`}
@@ -162,7 +163,7 @@ export default function AuctionList() {
               </div>
             </div>
             {idx < filteredItems.length - 1 && (
-              <div style={{width: '80%', borderBottom: '3px solid #222', margin: '2rem auto'}}></div>
+              <div className={styles["divider"]}></div>
             )}
           </div>
         ))}
