@@ -18,8 +18,6 @@ Admins can create, close, and delete auctions, with automatic winner emails and 
 - [Security](#security)
 - [Real-Time Events](#real-time-events)
 - [Email Notifications](#email-notifications)
-- [Authors](#authors)
-- [License](#license)
 
 ---
 
