@@ -190,13 +190,4 @@ npm start
 - **Outbid email** – sent to previous highest bidder.
 - Powered by Nodemailer with SMTP configuration.
 
----
 
-## Authors
-**Group 4 – CSIS-3380 Section 002**
-- Fredrick Woo – 300392579  
-- Ryuto Yamaguchi – 300394617  
-- Daine Kerr – 300365921  
-- Fernando Machado – 300389118
-
----
